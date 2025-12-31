@@ -1,8 +1,8 @@
 import { useRef, useState } from "react"
+import Sidemenu from "../components/Sidemenu"
 import { employees, type Employee } from "./data"
-import { Menu, Search, ChevronUp, ChevronDown } from "lucide-react"
-import Sidemenu from "../components/sidemenu"
 import EmployeeCard from "../components/EmployeeCard"
+import { Menu, Search, ChevronUp, ChevronDown } from "lucide-react"
 
 function Home() {
 	const [isExpandedFilters, setIsExpandedFilters] = useState(false)
