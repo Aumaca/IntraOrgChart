@@ -1,51 +1,23 @@
-export interface Employee {
+export interface Person {
 	id: string
-	name: string
-	department: string
-	location: string
+	firstName: string
+	lastName: string
+	role: string
+	email: string
+	username: string
+	telephone: string
+	image: string
+	continent: string
+	country: string
+	state: string
+	city: string
+	departmentId: string
 }
 
-export const employees: Employee[] = [
-	{
-		id: "1",
-		name: "Maria Ferreira",
-		department: "Customer Experience",
-		location: "SA, Brazil, SP, São Paulo",
-	},
-	{
-		id: "2",
-		name: "Maria Ferreira",
-		department: "Customer Experience",
-		location: "SA, Brazil, SP, São Paulo",
-	},
-	{
-		id: "3",
-		name: "Maria Ferreira",
-		department: "Customer Experience",
-		location: "SA, Brazil, SP, São Paulo",
-	},
-	{
-		id: "4",
-		name: "Maria Ferreira",
-		department: "Customer Experience",
-		location: "SA, Brazil, SP, São Paulo",
-	},
-	{
-		id: "4",
-		name: "Maria Ferreira",
-		department: "Customer Experience",
-		location: "SA, Brazil, SP, São Paulo",
-	},
-	{
-		id: "4",
-		name: "Maria Ferreira",
-		department: "Customer Experience",
-		location: "SA, Brazil, SP, São Paulo",
-	},
-	{
-		id: "4",
-		name: "Maria Ferreira",
-		department: "Customer Experience",
-		location: "SA, Brazil, SP, São Paulo",
-	},
-]
+export interface Department {
+	id: string
+	name: string
+	localization: string
+	email: string
+	managerId: string
+}

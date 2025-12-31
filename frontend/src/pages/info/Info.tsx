@@ -1,4 +1,4 @@
-import Logo from "./components/Logo"
+import { Logo } from "../components/Logo"
 import { Globe } from "lucide-react"
 import { Lineicons } from "@lineiconshq/react-lineicons"
 import { LinkedinOutlined, GithubOutlined } from "@lineiconshq/free-icons"
