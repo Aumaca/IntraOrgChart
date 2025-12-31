@@ -1,5 +1,5 @@
 import { useRef, useState } from "react"
-import Sidemenu from "../components/Sidemenu"
+import Sidemenu from "../components/sidemenu/Sidemenu"
 import { employees, type Employee } from "./data"
 import EmployeeCard from "../components/EmployeeCard"
 import { Menu, Search, ChevronUp, ChevronDown } from "lucide-react"
@@ -45,14 +45,17 @@ function Home() {
 										isScrolled ? "scale-75 origin-left" : "scale-100"
 									}`}
 								>
-									<Menu size={32} />
+									<Menu
+										size={32}
+										className="cursor-pointer"
+									/>
 								</div>
 							</button>
 
 							<div className="flex-1 flex justify-center">
 								<img
 									src="/logo.svg"
-									className={`transition-all duration-300 ease-in-out ${
+									className={`cursor-pointer transition-all duration-300 ease-in-out ${
 										isScrolled ? "w-8 h-8" : "w-[50px] h-[50px]"
 									}`}
 									alt="Logo"
@@ -88,12 +91,12 @@ function Home() {
 								{isExpandedFilters ? (
 									<ChevronUp
 										size={20}
-										className="text-slate-600"
+										className="text-slate-600 cursor-pointer"
 									/>
 								) : (
 									<ChevronDown
 										size={20}
-										className="text-slate-600"
+										className="text-slate-600 cursor-pointer"
 									/>
 								)}
 							</div>

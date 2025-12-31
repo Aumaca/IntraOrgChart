@@ -1,14 +1,39 @@
+import Logo from "./components/Logo"
 import React, { useState } from "react"
+import { useAuth } from "../context/AuthContext"
 import { User, Lock, ArrowRight, Eye, EyeOff } from "lucide-react"
 
 export default function Login() {
-	const [showPassword, setShowPassword] = useState(false)
+	const { login } = useAuth()
 	const [email, setEmail] = useState("")
 	const [password, setPassword] = useState("")
+	const [showPassword, setShowPassword] = useState(false)
 
-	const handleSubmit = (e: React.FormEvent) => {
+	async function handleSubmit(e: React.FormEvent) {
 		e.preventDefault()
-		console.log("Login:", { email, password })
+
+		try {
+			const response = await fetch(
+				`${import.meta.env.VITE_BACKEND_URL}/auth/login`,
+				{
+					method: "POST",
+					headers: { "Content-Type": "application/json" },
+					body: JSON.stringify({ email, password }),
+				}
+			)
+
+			const data = await response.json()
+			console.log(data)
+
+			if (response.ok) {
+				login(data.token)
+				window.location.href = "/"
+			} else {
+				alert("Login failed")
+			}
+		} catch (error) {
+			console.error(error)
+		}
 	}
 
 	return (
@@ -17,12 +42,7 @@ export default function Login() {
 				{/* Header */}
 				<div className="flex flex-col items-center mb-8">
 					<div className="mb-4 text-slate-800">
-						<img
-							src="logo.svg"
-							alt="Logo"
-							width={100}
-							height={100}
-						/>
+						<Logo />
 					</div>
 					<h1 className="text-2xl font-bold text-slate-800">Welcome</h1>
 					<p className="text-slate-500 text-sm mt-1">
