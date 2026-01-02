@@ -1,5 +1,4 @@
 import { Info, LogIn, LogOut, X } from "lucide-react"
-import { useEffect } from "react"
 import { useAuth } from "../../../context/AuthContext"
 
 export default function Sidemenu({
@@ -10,10 +9,6 @@ export default function Sidemenu({
 	onClose: () => void
 }) {
 	const { isAuthenticated, logout } = useAuth()
-
-	useEffect(() => {
-		console.log(isAuthenticated)
-	})
 
 	return (
 		<div

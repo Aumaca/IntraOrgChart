@@ -1,33 +1,33 @@
 import { FastifyInstance } from "fastify"
 import { departments, persons } from "../db/schema"
-import { and, eq, InferSelectModel, like, or, sql } from "drizzle-orm"
+import { and, asc, eq, InferSelectModel, like, or, sql } from "drizzle-orm"
 import { db } from "../db"
 
 type Department = InferSelectModel<typeof departments>
+type Person = InferSelectModel<typeof persons>
 
 export async function dataRoutes(app: FastifyInstance) {
 	// Get department data and their personel
-	app.get("/department/:department", async (req, rep) => {
-		const departmentParam = req.params.department.toLowerCase()
+	app.get("/department/:departmentId", async (req, rep) => {
+		const departmentId = req.params.departmentId.toLowerCase()
 		const department: Department | undefined = await db
 			.select()
 			.from(departments)
-			.where(eq(sql`lower(${departments.name})`, departmentParam))
+			.where(eq(departments.id, departmentId))
 			.get()
 
 		if (!department) {
 			return rep.status(404).send({ message: "Department not found" })
 		}
 
-		const people = await db
+		const person: Person[] | undefined = await db
 			.select()
 			.from(persons)
 			.where(eq(persons.departmentId, department?.id))
+			.orderBy(asc(persons.firstName))
 			.all()
 
-		console.log(department)
-		console.log(people)
-		return { message: "fine", department: department, people: people }
+		return { department: department, persons: person }
 	})
 
 	// Search

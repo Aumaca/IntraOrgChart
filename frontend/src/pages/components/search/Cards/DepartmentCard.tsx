@@ -1,10 +1,12 @@
-import type { Department } from "../../../home/data"
-import { MapPin, MoreVertical } from "lucide-react"
+import { MapPin } from "lucide-react"
+import type { Department } from "../../../../interfaces/interfaces"
 
 export default function DepartmentCard({
 	department,
+	handleClickCard,
 }: {
 	department: Department
+	handleClickCard: (id: string) => void
 }) {
 	const id = department.id
 
@@ -12,6 +14,7 @@ export default function DepartmentCard({
 		<div
 			key={id}
 			className="bg-white p-4 rounded-xl shadow-sm border border-slate-100 flex justify-between items-start mb-3 hover:shadow-md transition-shadow"
+			onClick={() => handleClickCard(id)}
 		>
 			<div className="space-y-1">
 				<h3 className="text-xl font-bold text-slate-800">{department.name}</h3>
@@ -24,10 +27,6 @@ export default function DepartmentCard({
 					<span>{department.localization}</span>
 				</div>
 			</div>
-
-			<button className="text-slate-400 hover:text-slate-600 p-1">
-				<MoreVertical size={20} />
-			</button>
 		</div>
 	)
 }

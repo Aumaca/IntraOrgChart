@@ -21,3 +21,10 @@ export interface Department {
 	email: string
 	managerId: string
 }
+
+export type TreeDataResult = Record<string, Department | Person[]>
+
+export interface TreeData {
+	department: Department
+	persons: Person[]
+}

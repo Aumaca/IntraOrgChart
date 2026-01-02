@@ -1,16 +1,22 @@
 import {
+	addEdge,
 	ReactFlow,
 	applyNodeChanges,
 	applyEdgeChanges,
-	addEdge,
+	type Connection,
+	type Edge,
+	type Node,
+	type NodeChange,
+	type EdgeChange,
 } from "@xyflow/react"
 import "@xyflow/react/dist/style.css"
-import { useState, useCallback, useMemo } from "react"
-import { DepartmentNode, initialEdges, initialNodes, PersonNode } from "./Nodes"
+import { DepartmentNode, PersonNode } from "./Nodes"
+import type { TreeData } from "../../../interfaces/interfaces"
+import { useState, useCallback, useMemo, useEffect } from "react"
 
-export default function Tree() {
-	const [nodes, setNodes] = useState(initialNodes)
-	const [edges, setEdges] = useState(initialEdges)
+export default function Tree({ treeData }: { treeData: TreeData | null }) {
+	const [nodes, setNodes] = useState<Node[]>([])
+	const [edges, setEdges] = useState<Edge[]>([])
 
 	const nodeTypes = useMemo(
 		() => ({
@@ -20,18 +26,56 @@ export default function Tree() {
 		[]
 	)
 
+	useEffect(() => {
+		if (!treeData || !treeData.department) return
+
+		const department = treeData.department
+		const persons = treeData.persons || []
+
+		const deptNode: Node = {
+			id: "dept-1",
+			type: "departmentNode",
+			position: { x: 0, y: 0 },
+			data: {
+				departmentName: department.name,
+				departmentLocation: department.localization,
+			},
+		}
+
+		const peopleNodes: Node[] = persons.map((person, index) => ({
+			id: `person-${index}`,
+			type: "personNode",
+			position: {
+				x: 150,
+				y: 75 + index * 55,
+			},
+			data: { personName: person.firstName + " " + person.lastName },
+		}))
+
+		const generatedEdges: Edge[] = persons.map((_, index) => ({
+			id: `e-dept-person-${index}`,
+			source: "dept-1",
+			target: `person-${index}`,
+			type: "smoothstep",
+		}))
+
+		// eslint-disable-next-line react-hooks/set-state-in-effect
+		setNodes([deptNode, ...peopleNodes])
+		setEdges(generatedEdges)
+	}, [treeData])
+
 	const onNodesChange = useCallback(
-		(changes) =>
-			setNodes((nodesSnapshot) => applyNodeChanges(changes, nodesSnapshot)),
+		(changes: NodeChange[]) =>
+			setNodes((nds) => applyNodeChanges(changes, nds)),
 		[]
 	)
 	const onEdgesChange = useCallback(
-		(changes) =>
-			setEdges((edgesSnapshot) => applyEdgeChanges(changes, edgesSnapshot)),
+		(changes: EdgeChange[]) =>
+			setEdges((eds) => applyEdgeChanges(changes, eds)),
 		[]
 	)
 	const onConnect = useCallback(
-		(params) => setEdges((edgesSnapshot) => addEdge(params, edgesSnapshot)),
+		(params: Connection) => setEdges((eds) => addEdge(params, eds)),
 		[]
 	)
 

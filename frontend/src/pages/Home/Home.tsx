@@ -5,6 +5,7 @@ import Sidemenu from "../components/sidemenu/Sidemenu"
 import { LogoThatTakesToTop } from "../components/Logo"
 import SearchComponent from "../components/search/Search"
 import ResultsList from "../components/search/ResultsList"
+import type { TreeData } from "../../interfaces/interfaces"
 
 export default function Home() {
 	const [isOpen, setIsOpen] = useState(false)
@@ -17,6 +18,7 @@ export default function Home() {
 		departments: [],
 	})
 	const [isSearching, setIsSearching] = useState(false)
+	const [treeData, setTreeData] = useState<TreeData | null>(null)
 
 	const listRef = useRef<HTMLDivElement>(null)
 
@@ -26,6 +28,25 @@ export default function Home() {
 	}) => {
 		setSearchResults(results)
 		setIsSearching(results.persons.length > 0 || results.departments.length > 0)
+	}
+
+	const handleClickCard = async (id: string): Promise<void> => {
+		try {
+			const response = await fetch(
+				`${import.meta.env.VITE_BACKEND_URL}/data/department/${id}`,
+				{ method: "GET" }
+			)
+			const data = await response.json()
+			setTreeData(data)
+		} catch (error) {
+			console.error(error)
+		}
+
+		// if (type == "Person") {
+		// 	return
+		// } else if (type == "Department") {
+		// 	return
+		// }
 	}
 
 	return (
@@ -74,13 +95,14 @@ export default function Home() {
 						<ResultsList
 							isSearching={isSearching}
 							searchResults={searchResults}
+							handleClickCard={handleClickCard}
 						/>
 					</div>
 				</div>
 			</div>
 
 			<div className="hidden md:flex flex-1 bg-white border-l">
-				<Tree />
+				<Tree treeData={treeData} />
 			</div>
 		</div>
 	)

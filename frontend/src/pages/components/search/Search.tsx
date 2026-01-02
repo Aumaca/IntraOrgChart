@@ -1,5 +1,5 @@
 import Input from "./Input"
-import Filters from "./Filters";
+import Filters from "./Filters"
 import { useState, useEffect } from "react"
 
 interface SearchProps {
@@ -20,7 +20,6 @@ export default function SearchComponent({ onSearch }: SearchProps) {
 						}/data/search?search=${encodeURIComponent(query)}`
 					)
 					const data = await res.json()
-					console.log(data)
 					onSearch(data.results)
 				} catch (err) {
 					console.error("Error searching:", err)
@@ -42,9 +41,7 @@ export default function SearchComponent({ onSearch }: SearchProps) {
 				setIsExpandedFilters={setIsExpandedFilters}
 			/>
 
-			{isExpandedFilters && (
-				<Filters />
-			)}
+			{isExpandedFilters && <Filters />}
 		</div>
 	)
 }

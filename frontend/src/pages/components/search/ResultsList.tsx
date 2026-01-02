@@ -5,12 +5,14 @@ import type { Department, Person } from "../../home/data"
 export default function ResultsList({
 	isSearching,
 	searchResults,
+	handleClickCard,
 }: {
 	isSearching: boolean
 	searchResults: {
 		persons: unknown[]
 		departments: unknown[]
 	}
+	handleClickCard: (id: string) => void
 }) {
 	return (
 		<div className="space-y-2">
@@ -23,7 +25,10 @@ export default function ResultsList({
 								Departments
 							</p>
 							{(searchResults.departments as Department[]).map((dept) => (
-								<DepartmentCard department={dept} />
+								<DepartmentCard
+									department={dept}
+									handleClickCard={handleClickCard}
+								/>
 							))}
 						</div>
 					)}
@@ -35,7 +40,10 @@ export default function ResultsList({
 								People
 							</p>
 							{(searchResults.persons as Person[]).map((emp) => (
-								<PersonCard people={emp} />
+								<PersonCard
+									persons={emp}
+									handleClickCard={handleClickCard}
+								/>
 							))}
 						</div>
 					)}
