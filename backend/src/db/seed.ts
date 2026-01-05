@@ -11,8 +11,9 @@ async function seed() {
 			{
 				firstName: "admin",
 				lastName: "admin",
-				email: "admin",
-				password: "admin",
+				email: "admin@admin.com",
+				password:
+					"$2a$12$Z9Isz1GPOHf0Wn8GaGANSe/lb.r.BjeZcn4T2Iqk1/pPuA.0aDet6",
 				role: "admin",
 			},
 		])

@@ -19,7 +19,7 @@ export default function Info() {
 						for companies to self-host
 					</p>
 					<p className="text-slate-500 text-md mt-1">
-						Developed by{" "}
+						Developed by
 						<span className="text-blue-500 font-bold italic">
 							Carlos Aumaca
 						</span>
