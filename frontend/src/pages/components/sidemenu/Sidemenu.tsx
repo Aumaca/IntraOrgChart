@@ -2,38 +2,38 @@ import { Info, LogIn, LogOut, X } from "lucide-react"
 import { useAuth } from "../../../context/AuthContext"
 
 export default function Sidemenu({
-	isOpen,
-	onClose,
+	onToggle,
+	isSidemenuOpen,
 }: {
-	isOpen: boolean
-	onClose: () => void
+	onToggle: () => void
+	isSidemenuOpen: boolean
 }) {
 	const { isAuthenticated, logout } = useAuth()
 
 	return (
 		<div
 			className={`fixed inset-0 z-50 flex ${
-				isOpen ? "pointer-events-auto" : "pointer-events-none"
+				isSidemenuOpen ? "pointer-events-auto" : "pointer-events-none"
 			}`}
 		>
 			{/* Backdrop */}
 			<div
 				className={`fixed inset-0 bg-black/50 transition-opacity duration-300 ease-in-out ${
-					isOpen ? "opacity-100" : "opacity-0"
+					isSidemenuOpen ? "opacity-100" : "opacity-0"
 				}`}
-				onClick={onClose}
+				onClick={onToggle}
 			></div>
 
 			{/* Slide In/Out */}
 			<div
 				className={`relative bg-white w-64 h-full shadow-xl flex flex-col p-6 z-10 transition-transform duration-300 ease-in-out ${
-					isOpen ? "translate-x-0" : "-translate-x-full"
+					isSidemenuOpen ? "translate-x-0" : "-translate-x-full"
 				}`}
 			>
 				<div className="flex justify-between items-center mb-8">
 					<h2 className="text-xl font-bold text-slate-800">Menu</h2>
 					<button
-						onClick={onClose}
+						onClick={onToggle}
 						className="text-slate-500 hover:text-red-500"
 					>
 						<X
