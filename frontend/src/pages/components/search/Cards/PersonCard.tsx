@@ -1,0 +1,44 @@
+import { Briefcase, MapPin } from "lucide-react"
+import type { Person } from "../../../../interfaces/interfaces"
+
+export default function PersonCard({
+	persons,
+	handleClickCard,
+}: {
+	persons: Person
+	handleClickCard: (id: string) => void
+}) {
+	const id = persons.id
+
+	return (
+		<div
+			key={id}
+			className="bg-white p-4 rounded-xl shadow-sm border border-slate-100 flex justify-between items-start mb-3 hover:shadow-md transition-shadow cursor-pointer"
+			onClick={() => handleClickCard(persons.departmentId)}
+		>
+			<div className="space-y-1">
+				<h3 className="text-xl font-bold text-slate-800">
+					{persons.firstName} {persons.lastName}
+				</h3>
+
+				<div className="flex items-center text-slate-500 text-sm font-medium mt-1">
+					<Briefcase
+						size={16}
+						className="mr-2 text-slate-400"
+					/>
+					<span>{persons.role}</span>
+				</div>
+
+				<div className="flex items-center text-slate-500 text-sm font-medium">
+					<MapPin
+						size={16}
+						className="mr-2 text-slate-400"
+					/>
+					<span>
+						{`${persons.continent}, ${persons.country}, ${persons.state}, ${persons.city}`}
+					</span>
+				</div>
+			</div>
+		</div>
+	)
+}

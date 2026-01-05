@@ -1,6 +1,6 @@
-import Logo from "./components/Logo"
+import { Logo } from "../components/Logo"
 import React, { useState } from "react"
-import { useAuth } from "../context/AuthContext"
+import { useAuth } from "../../context/AuthContext"
 import { User, Lock, ArrowRight, Eye, EyeOff } from "lucide-react"
 
 export default function Login() {
@@ -23,7 +23,6 @@ export default function Login() {
 			)
 
 			const data = await response.json()
-			console.log(data)
 
 			if (response.ok) {
 				login(data.token)

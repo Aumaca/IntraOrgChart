@@ -6,17 +6,23 @@ export const departments = sqliteTable("departments", {
 	email: text("email"),
 	localization: text("localization").notNull(),
 	managerId: integer("manager_id").references(() => persons.id),
+	parentId: integer("parent_id").references(() => departments.id),
 })
 
 export const persons = sqliteTable("persons", {
 	id: integer("id").primaryKey({ autoIncrement: true }),
 	firstName: text("first_name").notNull(),
 	lastName: text("last_name").notNull(),
+	role: text("role").notNull(),
 	email: text("email"),
 	username: text("username"),
 	telephone: text("telephone"),
 	image: text("image"),
-	localization: text("localization").notNull(),
+	continent: text("continent"),
+	country: text("country"),
+	state: text("state"),
+	city: text("city"),
+	departmentId: integer("department_id").references(() => departments.id),
 })
 
 export const users = sqliteTable("users", {
