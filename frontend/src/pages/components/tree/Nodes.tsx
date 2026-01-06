@@ -1,5 +1,6 @@
 import { PersonItem } from "./PersonItem"
 import type { HandleExpandFn } from "./utils"
+import type { Dispatch, SetStateAction } from "react"
 import { ChevronsDown, ChevronsUp } from "lucide-react"
 import type { Person } from "../../../interfaces/interfaces"
 import { Handle, Position, type Node, type NodeProps } from "@xyflow/react"
@@ -14,6 +15,7 @@ type DepartmentNodeData = {
 	departmentLocation: string
 	parentDepartmentId: number
 	handleExpand: HandleExpandFn
+	setFocusedPerson: Dispatch<SetStateAction<Person | null>>
 }
 
 type DepartmentNodeProps = NodeProps<Node<DepartmentNodeData>>
@@ -55,7 +57,11 @@ export const DepartmentNode = ({ data }: DepartmentNodeProps) => {
 				{data.persons && data.persons.length > 0 ? (
 					<ul className="divide-y divide-gray-100">
 						{data.persons.map((person) => (
-							PersonItem(person)
+							<PersonItem
+								key={`p-${person.id}`}
+								person={person}
+								setFocusedPerson={data.setFocusedPerson}
+							/>
 						))}
 					</ul>
 				) : (

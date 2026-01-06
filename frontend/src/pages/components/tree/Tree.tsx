@@ -7,20 +7,25 @@ import {
 } from "@xyflow/react"
 import "@xyflow/react/dist/style.css"
 import { DepartmentNode } from "./Nodes"
-import type { TreeData } from "../../../interfaces/interfaces"
+import type { Person, TreeData } from "../../../interfaces/interfaces"
 import { generateOrgChart, type HandleExpandFn } from "./utils"
 import { useMemo, useEffect, type Dispatch, type SetStateAction } from "react"
+import { PersonDetails } from "./PersonDetails"
 
 export default function Tree({
 	treeData,
 	setTreeData,
+	focusedPerson,
+	setFocusedPerson,
 	nodesIdToExpandUnder,
 	setNodesIdToExpandUnder,
 }: {
 	treeData: TreeData | null
+	focusedPerson: Person | null
 	nodesIdToExpandUnder: number[]
 	nodesIdToExpandAbove: number[]
 	setTreeData: Dispatch<SetStateAction<TreeData | null>>
+	setFocusedPerson: Dispatch<SetStateAction<Person | null>>
 	setNodesIdToExpandUnder: Dispatch<SetStateAction<number[]>>
 	setNodesIdToExpandAbove: Dispatch<SetStateAction<number[]>>
 }) {
@@ -63,7 +68,8 @@ export default function Tree({
 		const { nodes, edges } = generateOrgChart(
 			treeData,
 			nodesIdToExpandUnder,
-			handleExpand
+			handleExpand,
+			setFocusedPerson
 		)
 
 		setNodes(nodes)
@@ -72,15 +78,20 @@ export default function Tree({
 	}, [treeData, nodesIdToExpandUnder, setNodes, setEdges])
 
 	return (
-		<div className="w-full h-full">
-			<ReactFlow
-				nodes={nodes}
-				edges={edges}
-				onNodesChange={onNodesChange}
-				onEdgesChange={onEdgesChange}
-				nodeTypes={nodeTypes}
-				fitView
-			/>
+		<div className="w-full h-full flex flex-col">
+			<div className="flex-1 min-h-0 w-full">
+				<ReactFlow
+					fitView
+					nodes={nodes}
+					edges={edges}
+					nodeTypes={nodeTypes}
+					onNodesChange={onNodesChange}
+					onEdgesChange={onEdgesChange}
+				/>
+			</div>
+
+			{/* Bottom panel */}
+			{focusedPerson != null && <PersonDetails person={focusedPerson} />}
 		</div>
 	)
 }

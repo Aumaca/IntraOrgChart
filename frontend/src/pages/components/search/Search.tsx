@@ -1,9 +1,10 @@
 import Input from "./Input"
 import Filters from "./Filters"
 import { useState, useEffect } from "react"
+import type { searchResultsProps } from "../../home/Home"
 
 interface SearchProps {
-	onSearch: (data: { persons: unknown[]; departments: unknown[] }) => void
+	onSearch: (data: searchResultsProps) => void
 }
 
 export default function SearchComponent({ onSearch }: SearchProps) {
@@ -30,7 +31,7 @@ export default function SearchComponent({ onSearch }: SearchProps) {
 		}, 300)
 
 		return () => clearTimeout(timer)
-	}, [query])
+	}, [onSearch, query])
 
 	return (
 		<div className="space-y-4">

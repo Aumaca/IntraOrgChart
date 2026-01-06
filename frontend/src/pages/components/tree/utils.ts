@@ -1,6 +1,7 @@
 import dagre from "dagre"
 import { Position, type Edge, type Node } from "@xyflow/react"
 import type { Person, TreeData } from "../../../interfaces/interfaces"
+import type { Dispatch, SetStateAction } from "react"
 
 export type HandleExpandFn = (id: number) => Promise<void>
 
@@ -57,6 +58,7 @@ interface BuildGraphParams {
 	edges: Edge[]
 	parentId?: string
 	handleExpand: HandleExpandFn
+	setFocusedPerson: Dispatch<SetStateAction<Person | null>>
 }
 
 export const buildGraphRecursively = ({
@@ -66,6 +68,7 @@ export const buildGraphRecursively = ({
 	edges,
 	parentId,
 	handleExpand,
+	setFocusedPerson
 }: BuildGraphParams): void => {
 	if (!data || !data.department) return
 
@@ -87,6 +90,7 @@ export const buildGraphRecursively = ({
 			hasChildren: hasChildren,
 			persons: dept.persons || [],
 			parentDepartmentId: dept.parentId,
+			setFocusedPerson: setFocusedPerson
 		},
 		position: { x: 0, y: 0 },
 		draggable: false,
@@ -110,6 +114,7 @@ export const buildGraphRecursively = ({
 				edges,
 				parentId: deptNodeId,
 				handleExpand,
+				setFocusedPerson,
 			})
 		})
 	}
@@ -123,7 +128,8 @@ interface OrgChartResult {
 export const generateOrgChart = (
 	treeData: TreeData,
 	idsToShow: number[],
-	handleExpand: HandleExpandFn
+	handleExpand: HandleExpandFn,
+	setFocusedPerson: Dispatch<SetStateAction<Person|null>>
 ): OrgChartResult => {
 	const rawNodes: Node[] = []
 	const rawEdges: Edge[] = []
@@ -134,6 +140,7 @@ export const generateOrgChart = (
 		nodes: rawNodes,
 		edges: rawEdges,
 		handleExpand,
+		setFocusedPerson,
 	})
 
 	const { nodes, edges } = getLayoutedElements(rawNodes, rawEdges)

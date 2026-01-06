@@ -1,6 +1,6 @@
 import PersonCard from "./Cards/PersonCard"
 import DepartmentCard from "./Cards/DepartmentCard"
-import type { Department, Person } from "../../home/data"
+import type { Department, Person } from "../../../interfaces/interfaces"
 
 export default function ResultsList({
 	isSearching,

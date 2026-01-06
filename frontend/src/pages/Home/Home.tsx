@@ -6,30 +6,30 @@ import Sidemenu from "../components/sidemenu/Sidemenu"
 import { LogoThatTakesToTop } from "../components/Logo"
 import SearchComponent from "../components/search/Search"
 import ResultsList from "../components/search/ResultsList"
-import type { TreeData } from "../../interfaces/interfaces"
+import type { Person, TreeData } from "../../interfaces/interfaces"
+
+export interface searchResultsProps {
+	persons: []
+	departments: []
+}
 
 export default function Home() {
 	const [isSidemenuOpen, setIsSidemenuOpen] = useState(false)
 	const [isScrolled, setIsScrolled] = useState(false)
-	const [searchResults, setSearchResults] = useState<{
-		persons: unknown[]
-		departments: unknown[]
-	}>({
+	const [searchResults, setSearchResults] = useState<searchResultsProps>({
 		persons: [],
 		departments: [],
 	})
 	const [isSearching, setIsSearching] = useState(false)
 	const [treeData, setTreeData] = useState<TreeData | null>(null)
+	const [focusedPerson, setFocusedPerson] = useState<Person | null>(null)
+	const [isLeftPanelHidden, setIsLeftPanelHidden] = useState<boolean>(false)
 	const [nodesIdToExpandUnder, setNodesIdToExpandUnder] = useState<number[]>([])
 	const [nodesIdToExpandAbove, setNodesIdToExpandAbove] = useState<number[]>([])
-	const [isLeftPanelHidden, setIsLeftPanelHidden] = useState<boolean>(false)
 
 	const listRef = useRef<HTMLDivElement>(null)
 
-	const handleSearchUpdate = (results: {
-		persons: unknown[]
-		departments: unknown[]
-	}) => {
+	const handleSearchUpdate = (results: searchResultsProps) => {
 		setSearchResults(results)
 		setIsSearching(results.persons.length > 0 || results.departments.length > 0)
 	}
@@ -37,22 +37,26 @@ export default function Home() {
 	const handleClickCard = async (id: string): Promise<void> => {
 		const data: TreeData = await getDepartmentData(id)
 
+		if (window.innerWidth < 768) {
+			setIsLeftPanelHidden(true)
+		}
+
 		setNodesIdToExpandUnder([])
 		setTreeData(data)
 	}
 
 	return (
-		<div className="flex md:flex-row h-screen overflow-hidden relative">
-			{/* Toggle button to hide left panel */}
+		<div className="flex h-screen overflow-hidden relative">
+			{/* Toggle button */}
 			<button
 				onClick={() => setIsLeftPanelHidden(!isLeftPanelHidden)}
-				className={`hidden md:flex absolute z-50 top-6 h-10 w-10 cursor-pointer items-center justify-center rounded-e-lg border border-gray-200 bg-white text-slate-500 shadow-md transition-all duration-300 ease-in-out hover:bg-gray-50 hover:text-slate-800 ${
+				className={`hidden md:flex absolute z-50 top-6 h-10 w-10 cursor-pointer items-center justify-center rounded-e-lg border border-gray-200 bg-white text-slate-500 shadow-md transition-all duration-500 ease-in-out hover:bg-gray-50 hover:text-slate-800 ${
 					isLeftPanelHidden ? "left-0" : "left-[350px]"
 				}`}
 			>
 				<ChevronsRight
 					size={24}
-					className={`transition-transform duration-300 ${
+					className={`transition-transform duration-500 ${
 						isLeftPanelHidden ? "" : "rotate-180"
 					}`}
 				/>
@@ -60,9 +64,11 @@ export default function Home() {
 
 			{/* Left Panel */}
 			<div
-				className={`relative flex-1 md:flex-none bg-[#F0F4F8] shadow-2xl font-sans flex justify-center md:justify-start overflow-hidden transition-all duration-300 ease-in-out ${
-					isLeftPanelHidden ? "md:w-0 opacity-0" : "md:w-[350px] opacity-100"
-				}`}
+				className={`
+          relative bg-[#F0F4F8] shadow-2xl font-sans flex flex-col justify-start overflow-hidden transition-all duration-500 ease-in-out
+          flex-none h-full
+          ${isLeftPanelHidden ? "w-0" : "w-full md:w-[350px]"}
+        `}
 			>
 				{/* Sidemenu */}
 				<Sidemenu
@@ -70,8 +76,7 @@ export default function Home() {
 					onToggle={() => setIsSidemenuOpen(!isSidemenuOpen)}
 				/>
 
-				{/* Left Panel Content */}
-				<div className="w-full max-w-lg flex flex-col h-full min-w-[350px]">
+				<div className="w-full flex flex-col h-full min-w-[100vw] md:min-w-[350px]">
 					{/* Header */}
 					<div
 						className={`px-4 shrink-0 bg-[#F0F4F8] z-20 transition-all ${
@@ -98,7 +103,7 @@ export default function Home() {
 						</header>
 					</div>
 
-					{/* Search */}
+					{/* Search Content */}
 					<div
 						className="flex-1 overflow-y-auto px-4 pb-4 space-y-4 scroll-smooth"
 						onScroll={(e) => setIsScrolled(e.currentTarget.scrollTop > 10)}
@@ -115,11 +120,28 @@ export default function Home() {
 				</div>
 			</div>
 
-			{/* Right panel */}
-			<div className="hidden md:flex flex-1 bg-white">
+			{/* Right Panel */}
+			<div
+				className={`flex-1 bg-white flex flex-col h-full min-w-0 relative transition-all duration-500`}
+			>
+				{/* Button to show left panel in mobile */}
+				{isLeftPanelHidden && (
+					<button
+						onClick={() => setIsLeftPanelHidden(false)}
+						className="md:hidden absolute top-4 left-4 z-50 p-2 bg-white rounded-full shadow-lg border border-gray-200"
+					>
+						<ChevronsRight
+							className="rotate-180"
+							size={20}
+						/>
+					</button>
+				)}
+
 				<Tree
 					treeData={treeData}
 					setTreeData={setTreeData}
+					focusedPerson={focusedPerson}
+					setFocusedPerson={setFocusedPerson}
 					nodesIdToExpandUnder={nodesIdToExpandUnder}
 					nodesIdToExpandAbove={nodesIdToExpandAbove}
 					setNodesIdToExpandUnder={setNodesIdToExpandUnder}

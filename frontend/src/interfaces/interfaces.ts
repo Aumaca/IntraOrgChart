@@ -5,7 +5,7 @@ export interface Person {
 	role: string
 	email: string
 	username: string
-	telephone: string
+	telephone: string	
 	image: string
 	continent: string
 	country: string
