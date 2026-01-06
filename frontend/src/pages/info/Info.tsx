@@ -20,7 +20,7 @@ export default function Info() {
 					</p>
 					<p className="text-slate-500 text-md mt-1">
 						Developed by
-						<span className="text-blue-500 font-bold italic">
+						<span className="text-blue-500 font-bold italic ps-1">
 							Carlos Aumaca
 						</span>
 					</p>

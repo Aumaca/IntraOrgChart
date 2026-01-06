@@ -52,23 +52,23 @@ export const getLayoutedElements = (
 }
 
 interface BuildGraphParams {
-	data: TreeData
-	idsToShow: number[]
 	nodes: Node[]
 	edges: Edge[]
+	data: TreeData
 	parentId?: string
+	idsToShow: number[]
 	handleExpand: HandleExpandFn
 	setFocusedPerson: Dispatch<SetStateAction<Person | null>>
 }
 
 export const buildGraphRecursively = ({
 	data,
-	idsToShow,
 	nodes,
 	edges,
 	parentId,
+	idsToShow,
 	handleExpand,
-	setFocusedPerson
+	setFocusedPerson,
 }: BuildGraphParams): void => {
 	if (!data || !data.department) return
 
@@ -82,18 +82,18 @@ export const buildGraphRecursively = ({
 		type: "departmentNode",
 		data: {
 			departmentId: dept.id,
-			departmentName: dept.name,
-			departmentLocation: dept.localization,
 			isParent: hasChildren,
-			handleExpand: handleExpand,
-			hasParent: Boolean(dept.parentId),
 			hasChildren: hasChildren,
+			departmentName: dept.name,
+			handleExpand: handleExpand,
 			persons: dept.persons || [],
 			parentDepartmentId: dept.parentId,
-			setFocusedPerson: setFocusedPerson
+			hasParent: Boolean(dept.parentId),
+			setFocusedPerson: setFocusedPerson,
+			departmentLocation: dept.localization,
 		},
-		position: { x: 0, y: 0 },
 		draggable: false,
+		position: { x: 0, y: 0 },
 	})
 
 	if (parentId) {
@@ -129,7 +129,7 @@ export const generateOrgChart = (
 	treeData: TreeData,
 	idsToShow: number[],
 	handleExpand: HandleExpandFn,
-	setFocusedPerson: Dispatch<SetStateAction<Person|null>>
+	setFocusedPerson: Dispatch<SetStateAction<Person | null>>
 ): OrgChartResult => {
 	const rawNodes: Node[] = []
 	const rawEdges: Edge[] = []

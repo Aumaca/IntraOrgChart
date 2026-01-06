@@ -14,18 +14,18 @@ export interface searchResultsProps {
 }
 
 export default function Home() {
-	const [isSidemenuOpen, setIsSidemenuOpen] = useState(false)
 	const [isScrolled, setIsScrolled] = useState(false)
-	const [searchResults, setSearchResults] = useState<searchResultsProps>({
-		persons: [],
-		departments: [],
-	})
 	const [isSearching, setIsSearching] = useState(false)
+	const [isSidemenuOpen, setIsSidemenuOpen] = useState(false)
 	const [treeData, setTreeData] = useState<TreeData | null>(null)
 	const [focusedPerson, setFocusedPerson] = useState<Person | null>(null)
 	const [isLeftPanelHidden, setIsLeftPanelHidden] = useState<boolean>(false)
 	const [nodesIdToExpandUnder, setNodesIdToExpandUnder] = useState<number[]>([])
 	const [nodesIdToExpandAbove, setNodesIdToExpandAbove] = useState<number[]>([])
+	const [searchResults, setSearchResults] = useState<searchResultsProps>({
+		persons: [],
+		departments: [],
+	})
 
 	const listRef = useRef<HTMLDivElement>(null)
 
@@ -47,7 +47,7 @@ export default function Home() {
 
 	return (
 		<div className="flex h-screen overflow-hidden relative">
-			{/* Toggle button */}
+			{/* Toggle button (desktop) */}
 			<button
 				onClick={() => setIsLeftPanelHidden(!isLeftPanelHidden)}
 				className={`hidden md:flex absolute z-50 top-6 h-10 w-10 cursor-pointer items-center justify-center rounded-e-lg border border-gray-200 bg-white text-slate-500 shadow-md transition-all duration-500 ease-in-out hover:bg-gray-50 hover:text-slate-800 ${
@@ -124,7 +124,7 @@ export default function Home() {
 			<div
 				className={`flex-1 bg-white flex flex-col h-full min-w-0 relative transition-all duration-500`}
 			>
-				{/* Button to show left panel in mobile */}
+				{/* Show left panel button (mobile) */}
 				{isLeftPanelHidden && (
 					<button
 						onClick={() => setIsLeftPanelHidden(false)}
@@ -142,6 +142,7 @@ export default function Home() {
 					setTreeData={setTreeData}
 					focusedPerson={focusedPerson}
 					setFocusedPerson={setFocusedPerson}
+					isLeftPanelHidden={isLeftPanelHidden}
 					nodesIdToExpandUnder={nodesIdToExpandUnder}
 					nodesIdToExpandAbove={nodesIdToExpandAbove}
 					setNodesIdToExpandUnder={setNodesIdToExpandUnder}
