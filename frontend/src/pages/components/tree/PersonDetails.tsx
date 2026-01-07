@@ -8,8 +8,9 @@ import {
 	MapPin,
 	AtSign,
 	Building2,
+	ExternalLink,
 } from "lucide-react"
-import { useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import type { Person } from "../../../interfaces/interfaces"
 import { motion, useDragControls, type PanInfo } from "framer-motion"
 
@@ -22,6 +23,25 @@ export function PersonDetails({
 	onClose: () => void
 	isLeftPanelHidden: boolean
 }) {
+	const ref = useRef<HTMLDivElement>(null)
+	const [isCurrentWidthEnough, setIsCurrentWidthEnough] = useState(false)
+
+	useEffect(() => {
+		const element = ref.current
+		if (!element) return
+
+		const observer = new ResizeObserver((entries) => {
+			for (const entry of entries) {
+				const width = entry.contentRect.width
+				setIsCurrentWidthEnough(width >= 800)
+			}
+		})
+
+		observer.observe(element)
+
+		return () => observer.disconnect()
+	}, [])
+
 	const controls = useDragControls()
 
 	const handleDragEnd = (_: unknown, info: PanInfo) => {
@@ -56,9 +76,12 @@ export function PersonDetails({
 				<div className="w-12 h-1.5 bg-slate-300 rounded-full" />
 			</div>
 
-			<div className="flex flex-col md:flex-row gap-6">
+			<div
+				className="flex flex-col lg:flex-row gap-10 w-full max-w-5xl mx-auto"
+				ref={ref}
+			>
 				{/* Begin Avatar */}
-				<div className="flex flex-row md:flex-col items-center md:items-start gap-4 shrink-0">
+				<div className="flex flex-row lg:flex-col items-center lg:items-start gap-4 shrink-0">
 					<div className="relative">
 						{person.image != "" ? (
 							<img
@@ -76,7 +99,7 @@ export function PersonDetails({
 						)}
 					</div>
 
-					<div className="text-left md:text-center md:text-left">
+					<div className="text-left">
 						<h1 className="text-2xl font-bold text-slate-800 leading-tight">
 							{person.firstName} {person.lastName}
 						</h1>
@@ -89,12 +112,12 @@ export function PersonDetails({
 				{/* End Avatar */}
 
 				{/* Vertical divisor (desktop) */}
-				<div className="hidden md:block w-px bg-slate-100 mx-2" />
+				<div className="hidden lg:block w-px bg-slate-100 mx-2" />
 
 				{/* Person Details */}
 				<div
 					className={`flex-1 grid grid-cols-1 ${
-						isLeftPanelHidden ? "sm:grid-cols-2" : ""
+						isLeftPanelHidden || isCurrentWidthEnough ? "sm:grid-cols-2" : ""
 					} gap-y-5`}
 				>
 					{/* Contact Info Section */}
@@ -142,6 +165,8 @@ export function PersonDetails({
 							icon={<MapPin size={18} />}
 							label="State / City"
 							value={`${person.city}, ${person.state}`}
+							isLink={true}
+							href={`https://www.google.com/maps/place/${person.city}+${person.state}/`}
 						/>
 					</div>
 				</div>
@@ -209,6 +234,13 @@ function InfoItem({
 							)}
 						</button>
 					)}
+
+					{isLink && (
+						<ExternalLink
+							size={14}
+							className="text-slate-400 hover:text-blue-600 hover:bg-slate-100 transition-colors"
+						/>
+					)}
 				</div>
 			</div>
 		</div>
@@ -219,6 +251,8 @@ function InfoItem({
 			<a
 				href={href}
 				className="block cursor-pointer"
+				referrerPolicy="no-referrer"
+				target="_blank"
 			>
 				{InnerContent}
 			</a>
