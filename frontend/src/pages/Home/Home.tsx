@@ -1,12 +1,13 @@
 import { useRef, useState } from "react"
 import Tree from "../components/tree/Tree"
 import { getDepartmentData } from "./utils"
-import { ChevronsRight, Menu } from "lucide-react"
+import { useAuth } from "../../context/AuthContext"
 import Sidemenu from "../components/sidemenu/Sidemenu"
 import { LogoThatTakesToTop } from "../components/Logo"
 import SearchComponent from "../components/search/Search"
 import ResultsList from "../components/search/ResultsList"
 import type { Person, TreeData } from "../../interfaces/interfaces"
+import { ChevronsRight, Menu, Plus, Minus, Edit, Trash } from "lucide-react"
 
 export interface searchResultsProps {
 	persons: []
@@ -14,6 +15,8 @@ export interface searchResultsProps {
 }
 
 export default function Home() {
+	const { isAuthenticated } = useAuth()
+
 	const [isScrolled, setIsScrolled] = useState(false)
 	const [isSearching, setIsSearching] = useState(false)
 	const [isSidemenuOpen, setIsSidemenuOpen] = useState(false)
@@ -102,6 +105,21 @@ export default function Home() {
 							<div className="w-8"></div>
 						</header>
 					</div>
+
+					{/* CRUD Buttons if logged in */}
+					{isAuthenticated && (
+						<div className="p-3 px-16 flex justify-between">
+							<button className="cursor-pointer text-green-600 bg-white p-3 rounded-xl shadow-md hover:bg-gray-300">
+								<Plus />
+							</button>
+							<button className="cursor-pointer text-red-500 bg-white p-3 rounded-xl shadow-md hover:bg-gray-300">
+								<Trash />
+							</button>
+							<button className="cursor-pointer text-blue-500 bg-white p-3 rounded-xl shadow-md hover:bg-gray-300">
+								<Edit />
+							</button>
+						</div>
+					)}
 
 					{/* Search Content */}
 					<div
