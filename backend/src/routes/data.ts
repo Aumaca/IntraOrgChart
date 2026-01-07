@@ -1,8 +1,8 @@
+import { db } from "../db"
+import { getDepartment } from "./utils"
 import { FastifyInstance } from "fastify"
 import { departments, persons } from "../db/schema"
-import { and, asc, eq, InferSelectModel, like, or, sql } from "drizzle-orm"
-import { db } from "../db"
-import { getDepartment } from "./teste"
+import { eq, InferSelectModel, like, or, sql } from "drizzle-orm"
 
 type Department = InferSelectModel<typeof departments>
 type Person = InferSelectModel<typeof persons>
@@ -80,6 +80,14 @@ export async function dataRoutes(app: FastifyInstance) {
 					like(sql`lower(${persons.city})`, searchTerm)
 				)
 			)
+
+		peopleResults.forEach((person) => {
+			if (person.image) {
+				person.image = `${process.env.BACKEND_URL}/uploads/${person.image}`
+			} else {
+				person.image = ""
+			}
+		})
 
 		const departmentResults = await db
 			.select()

@@ -7,7 +7,7 @@ import { LogoThatTakesToTop } from "../components/Logo"
 import SearchComponent from "../components/search/Search"
 import ResultsList from "../components/search/ResultsList"
 import type { Person, TreeData } from "../../interfaces/interfaces"
-import { ChevronsRight, Menu, Plus, Minus, Edit, Trash } from "lucide-react"
+import { ChevronsRight, Menu, Plus, Edit, Trash } from "lucide-react"
 
 export interface searchResultsProps {
 	persons: []
@@ -37,8 +37,15 @@ export default function Home() {
 		setIsSearching(results.persons.length > 0 || results.departments.length > 0)
 	}
 
-	const handleClickCard = async (id: string): Promise<void> => {
-		const data: TreeData = await getDepartmentData(id)
+	const handleClickCard = async (
+		deptId: string,
+		person: Person|null
+	): Promise<void> => {
+		const data: TreeData = await getDepartmentData(deptId)
+
+		if (person) {
+			setFocusedPerson(person)
+		}
 
 		if (window.innerWidth < 768) {
 			setIsLeftPanelHidden(true)

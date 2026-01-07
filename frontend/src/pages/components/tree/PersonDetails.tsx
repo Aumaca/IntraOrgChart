@@ -60,7 +60,7 @@ export function PersonDetails({
 				{/* Begin Avatar */}
 				<div className="flex flex-row md:flex-col items-center md:items-start gap-4 shrink-0">
 					<div className="relative">
-						{person.image ? (
+						{person.image != "" ? (
 							<img
 								src={person.image}
 								alt="Avatar"

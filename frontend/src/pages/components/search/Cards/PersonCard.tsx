@@ -2,23 +2,23 @@ import { Briefcase, MapPin } from "lucide-react"
 import type { Person } from "../../../../interfaces/interfaces"
 
 export default function PersonCard({
-	persons,
+	person,
 	handleClickCard,
 }: {
-	persons: Person
-	handleClickCard: (id: string) => void
+	person: Person
+	handleClickCard: (deptId: string, person: Person | null) => void
 }) {
-	const id = persons.id
+	const id = person.id
 
 	return (
 		<div
 			key={id}
 			className="bg-white p-4 rounded-xl shadow-sm border border-slate-100 flex justify-between items-start mb-3 hover:shadow-md transition-shadow cursor-pointer"
-			onClick={() => handleClickCard(persons.departmentId)}
+			onClick={() => handleClickCard(person.departmentId, person)}
 		>
 			<div className="space-y-1">
 				<h3 className="text-xl font-bold text-slate-800">
-					{persons.firstName} {persons.lastName}
+					{person.firstName} {person.lastName}
 				</h3>
 
 				<div className="flex items-center text-slate-500 text-sm font-medium mt-1">
@@ -26,7 +26,7 @@ export default function PersonCard({
 						size={16}
 						className="mr-2 text-slate-400"
 					/>
-					<span>{persons.role}</span>
+					<span>{person.role}</span>
 				</div>
 
 				<div className="flex items-center text-slate-500 text-sm font-medium">
@@ -35,7 +35,7 @@ export default function PersonCard({
 						className="mr-2 text-slate-400"
 					/>
 					<span>
-						{`${persons.continent}, ${persons.country}, ${persons.state}, ${persons.city}`}
+						{`${person.continent}, ${person.country}, ${person.state}, ${person.city}`}
 					</span>
 				</div>
 			</div>

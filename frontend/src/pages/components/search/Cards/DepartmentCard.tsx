@@ -1,12 +1,12 @@
 import { MapPin } from "lucide-react"
-import type { Department } from "../../../../interfaces/interfaces"
+import type { Department, Person } from "../../../../interfaces/interfaces"
 
 export default function DepartmentCard({
 	department,
 	handleClickCard,
 }: {
 	department: Department
-	handleClickCard: (id: string) => void
+	handleClickCard: (deptId: string, person: Person|null) => void
 }) {
 	const id = department.id
 
@@ -14,7 +14,7 @@ export default function DepartmentCard({
 		<div
 			key={id}
 			className="bg-white p-4 rounded-xl shadow-sm border border-slate-100 flex justify-between items-start mb-3 hover:shadow-md transition-shadow cursor-pointer"
-			onClick={() => handleClickCard(id)}
+			onClick={() => handleClickCard(String(id), null)}
 		>
 			<div className="space-y-1">
 				<h3 className="text-xl font-bold text-slate-800">{department.name}</h3>

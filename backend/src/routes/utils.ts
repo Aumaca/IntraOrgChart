@@ -22,6 +22,14 @@ export async function getDepartment(
 		.orderBy(asc(persons.firstName))
 		.all()
 
+	personsFromDepartment.forEach((person) => {
+		if (person.image) {
+			person.image = `${process.env.BACKEND_URL}/uploads/${person.image}`
+		} else {
+			person.image = ""
+		}
+	})
+
 	const rawChildrenIds = await db
 		.select({ id: departments.id })
 		.from(departments)

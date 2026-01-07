@@ -12,7 +12,7 @@ export default function ResultsList({
 		persons: unknown[]
 		departments: unknown[]
 	}
-	handleClickCard: (id: string) => void
+	handleClickCard: (deptId: string, person: Person | null) => void
 }) {
 	return (
 		<div className="space-y-2">
@@ -40,10 +40,10 @@ export default function ResultsList({
 							<p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest px-2 mb-2">
 								People
 							</p>
-							{(searchResults.persons as Person[]).map((emp) => (
+							{(searchResults.persons as Person[]).map((person) => (
 								<PersonCard
-									persons={emp}
-									key={`p-${emp.id}`}
+									person={person}
+									key={`p-${person.id}`}
 									handleClickCard={handleClickCard}
 								/>
 							))}
